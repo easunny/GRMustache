@@ -263,6 +263,7 @@
  * @since v1.0
  */
 + (NSString *)renderObject:(id)object fromString:(NSString *)templateString error:(NSError **)error AVAILABLE_GRMUSTACHE_VERSION_7_0_AND_LATER;
++ (NSString *)renderObject:(id)object fromString:(NSString *)templateString contentType:(GRMustacheContentType)contentType error:(NSError **)error;
 
 /**
  * Renders an object from a bundle resource template.
