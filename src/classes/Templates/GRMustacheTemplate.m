@@ -131,7 +131,7 @@
     
     [GRMustacheRendering pushCurrentTemplateRepository:self.templateRepository];
     GRMustacheRenderingEngine *renderingEngine = [GRMustacheRenderingEngine renderingEngineWithContentType:_templateAST.contentType context:context];
-    rendering = [renderingEngine renderTemplateAST:_templateAST HTMLSafe:NULL error:error];
+    rendering = [renderingEngine renderTemplateAST:_templateAST HTMLSafe:HTMLSafe error:error];
     [GRMustacheRendering popCurrentTemplateRepository];
     
     return rendering;
