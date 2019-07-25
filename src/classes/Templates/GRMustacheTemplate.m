@@ -1,17 +1,17 @@
 // The MIT License
-// 
+//
 // Copyright (c) 2014 Gwendal Roué
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,11 +33,16 @@
 
 + (instancetype)templateFromString:(NSString *)templateString error:(NSError **)error
 {
+    return [self templateFromString:templateString contentType:[GRMustacheRendering currentContentType] error:error];
+}
+
++ (instancetype)templateFromString:(NSString *)templateString contentType:(GRMustacheContentType)contentType error:(NSError **)error
+{
     GRMustacheTemplateRepository *templateRepository = [GRMustacheRendering currentTemplateRepository];
+    
     if (templateRepository == nil) {
         templateRepository = [GRMustacheTemplateRepository templateRepositoryWithBundle:[NSBundle mainBundle]];
     }
-    GRMustacheContentType contentType = [GRMustacheRendering currentContentType];
     return [templateRepository templateFromString:templateString contentType:contentType error:error];
 }
 
@@ -67,7 +72,12 @@
 
 + (NSString *)renderObject:(id)object fromString:(NSString *)templateString error:(NSError **)error
 {
-    GRMustacheTemplate *template = [GRMustacheTemplate templateFromString:templateString error:error];
+    return [self renderObject:object fromString:templateString error:error];
+}
+
++ (NSString *)renderObject:(id)object fromString:(NSString *)templateString contentType:(GRMustacheContentType)contentType error:(NSError **)error
+{
+    GRMustacheTemplate *template = [GRMustacheTemplate templateFromString:templateString contentType:contentType error:error];
     return [template renderObject:object error:error];
 }
 
@@ -121,7 +131,7 @@
     
     [GRMustacheRendering pushCurrentTemplateRepository:self.templateRepository];
     GRMustacheRenderingEngine *renderingEngine = [GRMustacheRenderingEngine renderingEngineWithContentType:_templateAST.contentType context:context];
-    rendering = [renderingEngine renderTemplateAST:_templateAST HTMLSafe:HTMLSafe error:error];
+    rendering = [renderingEngine renderTemplateAST:_templateAST HTMLSafe:NULL error:error];
     [GRMustacheRendering popCurrentTemplateRepository];
     
     return rendering;
